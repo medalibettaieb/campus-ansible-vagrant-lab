@@ -1,0 +1,17 @@
+---
+- name: Install Git on VMs
+  hosts: all
+  become: yes
+  
+  tasks:
+  - name: Update apt cache
+    apt: update_cache=yes cache_valid_time=3600
+
+  - name: Install Git
+    apt:
+      name: git
+      state: present
+  - name: Add host key to known hosts
+    shell: ssh-keyscan -H {{ inventory_hostname }} >> ~/.ssh/known_hosts
+    become: no
+    ignore_errors: yes
